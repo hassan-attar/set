@@ -1,7 +1,7 @@
 
 # Hashing Set
 
-Hashing Set is a C++ template-based library that provides a set data structure implementation using various hashing techniques. It supports open addressing (linear probing, quadratic probing, double hashing) and separate chaining for collision resolution.
+Hashing Set is a C++ template-based library that provides a set data structure implementation using various hashing techniques. It supports open addressing (linear probing, quadratic probing, double hashing) and separate chaining for collision resolution (utilizing (SkipList)[https://github.com/hassan-attar/skiplist] as chains).
 
 ## Features
 
