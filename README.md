@@ -42,13 +42,13 @@ The Set class supports various probing methods for handling collisions:
 - **Quadratic Probing**
 - **Double Hashing**
 - **Separate Chaining**
-You can specify the probing method using the template parameter `PROBING`. By default, Double Hashing is used.
+You can specify the probing method using the template parameter `PROBING`. By default, Double Hashing is used. Example:
 ```cpp
 Set<int, PROBING::QUADRATIC> mySet; // PROBING is an enum
 ```
-You can also build your hashStruct to generate hashCodes for your data of type T. It defaults to std::hash<T>
+You can also build your hashStruct to generate hashCodes for your data of type T. It defaults to std::hash. Example:
 ```cpp
-Set<int, PROBING::Linear, MyHashStruct> mySet; // PROBING is an enum
+Set<int, PROBING::Linear, MyHashStruct> mySet; // MyHashStruct is a struct with overloaded operator()
 ```
 
 ## <a id="examples">Examples</a>
