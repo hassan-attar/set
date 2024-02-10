@@ -8,37 +8,38 @@
 #include <cmath>
 #include <iomanip>
 
-template<typename T, PROBING ProbingMethod>
-const double Set<T, ProbingMethod>::OPEN_ADDRESSING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD = 0.70;
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const double Set<T, ProbingMethod, hashStruct>::OPEN_ADDRESSING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD = 0.70;
 
-template<typename T, PROBING ProbingMethod>
-const double Set<T, ProbingMethod>::OPEN_ADDRESSING_DEFAULT_MIN_LOADING_FACTOR_THRESHOLD = 0.40;
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const double Set<T, ProbingMethod, hashStruct>::OPEN_ADDRESSING_DEFAULT_MIN_LOADING_FACTOR_THRESHOLD = 0.40;
 
-template<typename T, PROBING ProbingMethod>
-const double Set<T, ProbingMethod>::SEPARATE_CHAINING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD = 5; // 5 items in each bucket max
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const double Set<T, ProbingMethod, hashStruct>::SEPARATE_CHAINING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD = 5; // 5 items in each bucket max
 
-template<typename T, PROBING ProbingMethod>
-const double Set<T, ProbingMethod>::SEPARATE_CHAINING_DEFAULT_MIN_LOADING_FACTOR_THRESHOLD = 2.5;
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const double Set<T, ProbingMethod, hashStruct>::SEPARATE_CHAINING_DEFAULT_MIN_LOADING_FACTOR_THRESHOLD = 2.5;
 
-template<typename T, PROBING ProbingMethod>
-const size_t Set<T, ProbingMethod>::SEPARATE_CHAINING_DEFAULT_MAX_CHAIN_SIZE = 10; // max 10 items in each chain
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const size_t Set<T, ProbingMethod, hashStruct>::SEPARATE_CHAINING_DEFAULT_MAX_CHAIN_SIZE = 10; // max 10 items in each chain
 
-template<typename T, PROBING ProbingMethod>
-const PROBING Set<T, ProbingMethod>::DEFAULT_PROBING_METHOD = PROBING::LINEAR;
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const PROBING Set<T, ProbingMethod, hashStruct>::DEFAULT_PROBING_METHOD = PROBING::LINEAR;
 
-template<typename T, PROBING ProbingMethod>
-const size_t Set<T, ProbingMethod>::OPEN_ADDRESSING_DEFAULT_CAPACITY = 16;
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const size_t Set<T, ProbingMethod, hashStruct>::OPEN_ADDRESSING_DEFAULT_CAPACITY = 16;
 
-template<typename T, PROBING ProbingMethod>
-const size_t Set<T, ProbingMethod>::SEPARATE_CHAINING_DEFAULT_CAPACITY = 7;
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+const size_t Set<T, ProbingMethod, hashStruct>::SEPARATE_CHAINING_DEFAULT_CAPACITY = 7;
+
 
 // CONSTRUCTORS
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod>::Set():Set((size_t)OPEN_ADDRESSING_DEFAULT_CAPACITY / 2){}
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct>::Set():Set((size_t)OPEN_ADDRESSING_DEFAULT_CAPACITY / 2){}
 
 // Main Constructor
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod>::Set(size_t numOfElementToExpect)
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct>::Set(size_t numOfElementToExpect)
 : hashTable{nullptr},
 size{0}, capacity{numOfElementToExpect * 2},
 loadingFactorThreshold{OPEN_ADDRESSING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD}, PROBING_METHOD{ProbingMethod} {
@@ -56,16 +57,16 @@ loadingFactorThreshold{OPEN_ADDRESSING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD}, PR
 
 }
 
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod>::Set(const std::initializer_list<T> &list): Set(list.size()) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct>::Set(const std::initializer_list<T> &list): Set(list.size()) {
     for(const T& x: list){
         insert(x);
     }
 }
 
 // Copy Constructor / Assignment
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod>::Set(const Set<T, ProbingMethod> &rhs)
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct>::Set(const Set<T, ProbingMethod, hashStruct> &rhs)
 : hashTable{nullptr},
 size{rhs.size}, capacity{rhs.capacity},
 loadingFactorThreshold{rhs.loadingFactorThreshold}, PROBING_METHOD{ProbingMethod}{
@@ -83,8 +84,8 @@ loadingFactorThreshold{rhs.loadingFactorThreshold}, PROBING_METHOD{ProbingMethod
         }
     }
 }
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod> &Set<T, ProbingMethod>::operator=(const Set<T, ProbingMethod> &rhs) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct> &Set<T, ProbingMethod, hashStruct>::operator=(const Set<T, ProbingMethod, hashStruct> &rhs) {
     if(this != &rhs) {
         if constexpr (ProbingMethod & PROBING::CHAINING) {
             clear();
@@ -110,8 +111,8 @@ Set<T, ProbingMethod> &Set<T, ProbingMethod>::operator=(const Set<T, ProbingMeth
 }
 
 // Move Constructor / Assignment
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod>::Set(Set<T, ProbingMethod> &&rhs) noexcept
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct>::Set(Set<T, ProbingMethod, hashStruct> &&rhs) noexcept
 :hashTable{nullptr},
  size{rhs.size}, capacity{rhs.capacity},
  loadingFactorThreshold{rhs.loadingFactorThreshold}, PROBING_METHOD{ProbingMethod}{
@@ -131,8 +132,8 @@ Set<T, ProbingMethod>::Set(Set<T, ProbingMethod> &&rhs) noexcept
         }
     }
 }
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod> &Set<T, ProbingMethod>::operator=(Set<T, ProbingMethod> &&rhs) noexcept{
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct> &Set<T, ProbingMethod, hashStruct>::operator=(Set<T, ProbingMethod, hashStruct> &&rhs) noexcept{
     if constexpr (ProbingMethod & PROBING::CHAINING){
         clear();
         SkipList<T>::setDefaultObjectMaxLevel(3);
@@ -160,12 +161,12 @@ Set<T, ProbingMethod> &Set<T, ProbingMethod>::operator=(Set<T, ProbingMethod> &&
 }
 
 // Destructor / Clear
-template<typename T, PROBING ProbingMethod>
-Set<T, ProbingMethod>::~Set(){
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+Set<T, ProbingMethod, hashStruct>::~Set(){
     clear();
 }
-template<typename T, PROBING ProbingMethod>
-void Set<T, ProbingMethod>::clear() {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+void Set<T, ProbingMethod, hashStruct>::clear() {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         delete [] hashTable;
         hashTable = nullptr;
@@ -184,13 +185,13 @@ void Set<T, ProbingMethod>::clear() {
 
 
 // Hash Functions
-template<typename T, PROBING ProbingMethod>
-size_t Set<T, ProbingMethod>::primaryHash(const T &value) {
-    static std::hash<T> hashFunc; // using built-in hash function
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+size_t Set<T, ProbingMethod, hashStruct>::primaryHash(const T &value) {
+    static hashStruct hashFunc; // using built-in hash function
     return hashFunc(value) % capacity;
 }
-template<typename T, PROBING ProbingMethod>
-size_t Set<T, ProbingMethod>::secondaryHash(const size_t &value) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+size_t Set<T, ProbingMethod, hashStruct>::secondaryHash(const size_t &value) {
     static std::hash<size_t> doubleHashFunc; // using built-in hash function
     return 37 + (doubleHashFunc(value) * 7); // prime numbers are chosen on purpose.
 }
@@ -198,9 +199,10 @@ size_t Set<T, ProbingMethod>::secondaryHash(const size_t &value) {
 /**
  * Inserts value in the hash table, based on the probing method chosen.
  * @param value
+ * @return true if insert was successful, false if element already exist in the hashTable
  */
-template<typename T, PROBING ProbingMethod>
-void Set<T, ProbingMethod>::insert(const T &value) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+bool Set<T, ProbingMethod, hashStruct>::insert(const T &value) {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         if(!hashTable){ // initialize hashTable if it's cleared before
             SkipList<T>::setDefaultObjectMaxLevel(3);
@@ -208,19 +210,21 @@ void Set<T, ProbingMethod>::insert(const T &value) {
             loadingFactorThreshold = SEPARATE_CHAINING_DEFAULT_MAX_LOADING_FACTOR_THRESHOLD;
             capacity = SEPARATE_CHAINING_DEFAULT_CAPACITY;
         };
+        bool r;
         size_t index = findSpot(value); // find the index to insert the item
         if(hashTable[index].getSize() > SEPARATE_CHAINING_DEFAULT_MAX_CHAIN_SIZE || (((double)(size + 1)) / capacity > loadingFactorThreshold)){
             // check if rehashing is needed after insertion to maintain loadingFactor or max chain size
             rehash(true, capacity * 2);
             // rehash before inserting the element
-            hashTable[findSpot(value)].insert(value);
+            r = hashTable[findSpot(value)].insert(value);
         } else {
-            hashTable[index].insert(value);
+            r = hashTable[index].insert(value);
         }
         size++;
+        return r;
     } else {
         size_t index = findSpot(value);// find the index to insert the item
-        if(hashTable[index]) return;// if the element already exists (place is full) return
+        if(hashTable[index]) return false;// if the element already exists (place is full) return
         if(((double)(size + 1)) / capacity > loadingFactorThreshold){
             // check if insertion will need rehashing to maintain loadingFactor below the threshold
             rehash(true, capacity * 2);
@@ -230,16 +234,16 @@ void Set<T, ProbingMethod>::insert(const T &value) {
             hashTable[index] = new T(value);
         }
         size++;
+        return true;
     }
-
 }
 
 /**
  * @param value to search for in the Set
  * @return true if value exits in the Set, false otherwise.
  */
-template<typename T, PROBING ProbingMethod>
-bool Set<T, ProbingMethod>::contains(const T &value) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+bool Set<T, ProbingMethod, hashStruct>::contains(const T &value) {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         if(!hashTable) return false;
         size_t index = findSpot(value);
@@ -259,12 +263,16 @@ bool Set<T, ProbingMethod>::contains(const T &value) {
  * @param hashIndex the hashIndex that was calculated on the first step. (initial hashIndex that cause the collision)
  * @return the next index, in which value can be inserted, based on ProbingMethod (LINEAR, QUADRATIC, DOUBLE_HASHING)
  */
-template<typename T, PROBING ProbingMethod>
-size_t Set<T, ProbingMethod>::getNextIndex(int i, const size_t &hashIndex) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+size_t Set<T, ProbingMethod, hashStruct>::getNextIndex(int i, const size_t &hashIndex) {
+    size_t MaxProbeCountBeforeRehash = 2 * capacity;
+    if(i > MaxProbeCountBeforeRehash){
+        rehash(true, capacity * 1.5);
+    }
     if constexpr (ProbingMethod & PROBING::LINEAR){
         return (hashIndex + i) % capacity;
     } else if constexpr (ProbingMethod & PROBING::QUADRATIC){
-        return (hashIndex + (int)std::round(std::pow(i, 2))) % capacity;
+        return (hashIndex + i * i) % capacity;
     } else {
         return (hashIndex + i * secondaryHash(hashIndex)) % capacity;
     }
@@ -279,8 +287,8 @@ size_t Set<T, ProbingMethod>::getNextIndex(int i, const size_t &hashIndex) {
  * @param value
  * @return the index in which the element should be (that index either has the element or is empty)
  */
-template<typename T, PROBING ProbingMethod>
-size_t Set<T, ProbingMethod>::findSpot(const T &value) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+size_t Set<T, ProbingMethod, hashStruct>::findSpot(const T &value) {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         return primaryHash(value);
     } else {
@@ -292,24 +300,23 @@ size_t Set<T, ProbingMethod>::findSpot(const T &value) {
         }
         return index;
     }
-
 }
 
 // GETTERS
-template<typename T, PROBING ProbingMethod>
-inline constexpr double Set<T, ProbingMethod>::getLoadingFactor() {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+inline constexpr double Set<T, ProbingMethod, hashStruct>::getLoadingFactorThreshold() {
     return ((double) size / capacity);
 }
-template<typename T, PROBING ProbingMethod>
-inline constexpr size_t Set<T, ProbingMethod>::getSize() {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+inline constexpr size_t Set<T, ProbingMethod, hashStruct>::getSize() {
     return size;
 }
-template<typename T, PROBING ProbingMethod>
-inline constexpr size_t Set<T, ProbingMethod>::getCapacity() {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+inline constexpr size_t Set<T, ProbingMethod, hashStruct>::getCapacity() {
     return capacity;
 }
-template<typename T, PROBING ProbingMethod>
-void Set<T, ProbingMethod>::setLoadingFactor(double val) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+void Set<T, ProbingMethod, hashStruct>::setLoadingFactorThreshold(double val) {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         if(val > 0)
             loadingFactorThreshold = val;
@@ -324,8 +331,8 @@ void Set<T, ProbingMethod>::setLoadingFactor(double val) {
  * @param value to be removed
  * @return true if operation was successful, false otherwise (element was not there)
  */
-template<typename T, PROBING ProbingMethod>
-bool Set<T, ProbingMethod>::remove(const T &value) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+bool Set<T, ProbingMethod, hashStruct>::remove(const T &value) {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         if(!hashTable) return false; // removing from empty hashTable
         size_t index = findSpot(value); // find the chain where the value shoud be in
@@ -358,8 +365,8 @@ bool Set<T, ProbingMethod>::remove(const T &value) {
  * @param increaseCap Whether we want to increase the cap, or just re-insert the existing elements
  * @param toCap to What capacity are we going to increase it
  */
-template<typename T, PROBING ProbingMethod>
-void Set<T, ProbingMethod>::rehash(bool increaseCap, size_t toCap) {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+void Set<T, ProbingMethod, hashStruct>::rehash(bool increaseCap, size_t toCap) {
     if constexpr (ProbingMethod & PROBING::CHAINING){
         // if(!increaseCap) return; this will be a dummy idea to rehash a hashTable in chaining method without increasing the cap.
         SkipList<T> *tempHashTable = hashTable;
@@ -401,8 +408,8 @@ void Set<T, ProbingMethod>::rehash(bool increaseCap, size_t toCap) {
 /**
  * displays the HashTable
  */
-template<typename T, PROBING ProbingMethod>
-void Set<T, ProbingMethod>::display() {
+template<typename T, PROBING ProbingMethod, typename hashStruct>
+void Set<T, ProbingMethod, hashStruct>::display() {
     std::cout << "HASH TABLE : ";
     if constexpr (ProbingMethod & PROBING::LINEAR){
         std::cout << "LINEAR PROBING"<< std::endl;
@@ -438,9 +445,9 @@ void Set<T, ProbingMethod>::display() {
         for(size_t i = 0; i < capacity; i++){
             std::cout << std::setw(3) << i << " [";
             if(hashTable[i]){
-                std::cout << std::setw(6) << *hashTable[i];
+                std::cout << *hashTable[i];
             }else {
-                std::cout << "------";
+                std::cout << "-";
             }
             std::cout << "]\n";
         }

@@ -1,66 +1,6 @@
 #include <iostream>
 #include "Set.h"
-#include "functional"
-int main() {
-    Set<int, PROBING::LINEAR> sl;
-    sl.insert(7);
-    sl.insert(7 + 16);
-    sl.insert(7 + 32);
-    sl.insert(7 + 48);
-    sl.remove(7 + 16);
-    sl.display();
-    Set<int, PROBING::QUADRATIC> sq;
-    sq.insert(7);
-    sq.insert(7 + 16);
-    sq.insert(7 + 32);
-    sq.remove(7 + 32);
-    sq.insert(7 + 48);
-    sq.display();
-    Set<int, PROBING::DOUBLE_HASHING> sd;
-    sd.insert(7);
-    sd.insert(7 + 16);
-    sd.insert(7 + 32);
-    sd.insert(7 + 48);
-    sd.remove(7 + 48);
-    sd.display();
-
-    Set<int, PROBING::CHAINING> s;
-    s.insert(2);
-    s.insert(6);
-    s.insert(42);
-    s.insert(4);
-    s.insert(843);
-    s.insert(782);
-    s.insert(-32);
-    s.insert(24);
-    s.insert(-1231);
-    s.insert(12345);
-    s.insert(122);
-    s.insert(984);
-    s.display();
-    std::cout << "LOADING_FACTOR: " << s.getLoadingFactor() << std::endl;
-    std::cout << "S" << std::endl;
-    s.display();
-    Set<int, PROBING::CHAINING> m(std::move(s));
-    std::cout << "S AFTER" << std::endl;
-    s.display();
-    std::cout << "MOVE" << std::endl;
-    m.display();
-    std::cout << "S AFTER INSERT" << std::endl;
-    s.insert(12345);
-    s.insert(122);
-    s.display();
-
-    s = std::move(m);
-
-    std::cout << "m AFTER MOVE" << std::endl;
-    m.display();
-    std::cout << "S AFTER" << std::endl;
-    s.display();
-}
-
-
-
+#include "algorithm"
 /*
 Sample Problem that we can solve efficiently using a Set (HashTable):
 Given a string, write a function that returns true, if the string has repeated characters, false otherwise.
@@ -68,3 +8,64 @@ Solution 1> O(n^2) brute-force algorithm
 Solution 2> O(nlog(n)) more efficient algorithm
 Solution 3> O(n) as efficient as it gets.
 */
+bool hasRepeatedCharactersBruteForce(const std::string &str){  // Time: O(N^2) ; Space: O(1)
+    size_t size = str.size(), i, j;
+    for(i = 0; i < size; i++){ // O(N)
+        for(j = i + 1; j < size; j++){ // O(N)
+            if(str[i] == str[j]) return true;
+        }
+    }
+    return false;
+    //space O(1)
+}
+bool hasRepeatedCharactersUsingSorting(const std::string &str){ // Time: O(N*Log(N)) ; Space: O(N)
+    std::string cp = str; // O(N)
+    std::sort(cp.begin(), cp.end()); // O(N*Log(N))
+    return std::adjacent_find(cp.begin(), cp.end()) != cp.end(); // O(N)
+    // space O(N)
+}
+bool hasRepeatedCharactersUsingSet(const std::string &str){ // Time: O(N) ; Space: O(N)
+    Set<char, PROBING::QUADRATIC> set(str.size()); // O(1)
+    for(const char &c : str){ // O(N)
+        if(!set.insert(c)){ // O(1)
+            return true;
+        }
+    }
+    return false;
+    // space O(N), taking 2N space here, which is still linear
+}
+
+template<PROBING ProbingMethod, typename hashStruct>
+void insertValueWithCollision(Set<int, ProbingMethod, hashStruct> &set, int count){
+    int val = 7;
+    for(int i = 0; i < count; i++){
+        set.insert(val + (i * set.getCapacity()));
+    }
+}
+
+int main() {
+
+    Set<int, PROBING::LINEAR> sl;
+    insertValueWithCollision(sl, 5);
+    sl.display();
+    Set<int, PROBING::QUADRATIC> sq;
+    insertValueWithCollision(sq, 5);
+    sq.display();
+    Set<int, PROBING::DOUBLE_HASHING> sd;
+    insertValueWithCollision(sd, 5);
+    sd.display();
+
+    Set<int, PROBING::CHAINING> sc;
+    insertValueWithCollision(sc, 5);
+    sc.display();
+
+    std::string s("Hello World");
+    std::cout << "Find Duplicate char in: " << s << std::endl;
+    std::cout << "Brute Force: " << hasRepeatedCharactersBruteForce(s) << std::endl; // Time: O(N^2) ; Space: O(1)
+    std::cout << "Using Sorting: " << hasRepeatedCharactersUsingSorting(s) << std::endl; // Time: O(N*Log(N)) ; Space: O(N)
+    std::cout << "Using Set: " << hasRepeatedCharactersUsingSet(s) << std::endl; // Time: O(N) ; Space: O(N)
+    return 0;
+}
+
+
+

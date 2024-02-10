@@ -4,7 +4,6 @@
 
 #ifndef HASHING_SET_H
 #define HASHING_SET_H
-#include <bitset>
 #include <functional>
 #include <initializer_list>
 #include "./skiplist/SkipList.h"
@@ -16,7 +15,7 @@ enum PROBING {
     CHAINING = 8
 };
 
-template<typename T, PROBING ProbingMethod = PROBING::LINEAR>
+template<typename T, PROBING ProbingMethod = PROBING::DOUBLE_HASHING, typename hashStruct = std::hash<T>>
 class Set {
 private:
     typename std::conditional<ProbingMethod == PROBING::CHAINING, SkipList<T>*, T**>::type hashTable;
@@ -26,8 +25,8 @@ private:
     PROBING PROBING_METHOD;
 
     void rehash(bool increaseCap = false, size_t toCap = 0);
-    size_t primaryHash(const T &value);
-    size_t secondaryHash(const size_t& value);
+    virtual size_t primaryHash(const T &value);
+    virtual size_t secondaryHash(const size_t& value);
     size_t findSpot(const T &value);
     size_t getNextIndex(int i, const size_t &hashIndex);
 public:
@@ -50,18 +49,18 @@ public:
     static const size_t SEPARATE_CHAINING_DEFAULT_CAPACITY;
     static const size_t SEPARATE_CHAINING_DEFAULT_MAX_CHAIN_SIZE;
 
-    void insert(const T &value);
+    bool insert(const T &value);
     bool remove(const T &value);
     bool contains(const T &value);
     void display();
     void clear();
     // getters
-    inline constexpr double getLoadingFactor();
+    inline constexpr double getLoadingFactorThreshold();
     inline constexpr size_t getSize();
     inline constexpr size_t getCapacity();
 
     // setter
-    void setLoadingFactor(double val);
+    void setLoadingFactorThreshold(double val);
 
 };
 
