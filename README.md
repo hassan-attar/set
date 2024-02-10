@@ -248,7 +248,7 @@ HASH TABLE : CHAINING
   5 [EMPTY]
   6 [EMPTY]
 </pre>
-### Different Hashing Functions and Collisions: 
+### Custom Hash Function and Collisions: 
 ```cpp
 #include <iostream>
 #include "Set.h"
