@@ -302,7 +302,7 @@ HASH TABLE : LINEAR PROBING
  14 [71]
  15 [-]
 
-Built in std::hash<int> which is identity hash. (3 -> 3)
+Built in std::hash for int which is identity hash. (3 -> 3)
 HASH TABLE : LINEAR PROBING
   0 [-]
   1 [-]
