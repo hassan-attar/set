@@ -129,12 +129,12 @@ bool hasRepeatedCharactersBruteForce(const std::string &str){  // Time: O(N^2) ;
     }
     return false;
 }
-bool hasRepeatedCharactersUsingSorting(const std::string &str){ // Time: O(N*Log(N)) ; Space: O(N) taking 2N space here, which is still linear
+bool hasRepeatedCharactersUsingSorting(const std::string &str){ // Time: O(N*Log(N)) ; Space: O(N) 
     std::string cp = str; // O(N)
     std::sort(cp.begin(), cp.end()); // O(N*Log(N))
     return std::adjacent_find(cp.begin(), cp.end()) != cp.end(); // O(N)
 }
-bool hasRepeatedCharactersUsingSet(const std::string &str){ // Time: O(N) ; Space: O(N)
+bool hasRepeatedCharactersUsingSet(const std::string &str){ // Time: O(N) ; Space: O(N) taking 2N space here, which is still linear
     Set<char, PROBING::QUADRATIC> set(str.size()); // O(1)
     for(const char &c : str){ // O(N)
         if(!set.insert(c)){ // O(1)
