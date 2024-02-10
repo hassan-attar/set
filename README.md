@@ -80,7 +80,7 @@ int main() {
 }
 
 ```
-### Using Custom Probing Method and custom HashStruct
+### Using Custom Probing Method and Custom HashStruct
 ```cpp
 #include <iostream>
 #include "Set.h"
