@@ -283,6 +283,7 @@ int main() {
 ```
 Output:
 <pre>
+Custom Hash Function
 HASH TABLE : LINEAR PROBING
   0 [-]
   1 [-]
@@ -301,6 +302,7 @@ HASH TABLE : LINEAR PROBING
  14 [71]
  15 [-]
 
+Built in std::hash<int> which is identity hash. (3 -> 3)
 HASH TABLE : LINEAR PROBING
   0 [-]
   1 [-]
