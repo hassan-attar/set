@@ -186,15 +186,15 @@ HASH TABLE : LINEAR PROBING
   4 [-]
   5 [-]
   6 [-]
-  <font color="blue">7 [7]</font>
-  <font color="blue">8 [23]</font>
-  <font color="blue">9 [39]</font>
-  <font color="blue">10 [55]</font>
-  <font color="blue">11 [71]</font>
-  12 [-]
-  13 [-]
-  14 [-]
-  15 [-]
+  7 [7]
+  8 [23]
+  9 [39]
+ 10 [55]
+ 11 [71]
+ 12 [-]
+ 13 [-]
+ 14 [-]
+ 15 [-]
 
 HASH TABLE : QUADRATIC PROBING
   0 [-]
@@ -204,44 +204,44 @@ HASH TABLE : QUADRATIC PROBING
   4 [-]
   5 [-]
   6 [-]
-  <font color="blue">7 [55]</font>
-  <font color="blue">8 [7]</font>
+  7 [55]
+  8 [7]
   9 [-]
   10 [-]
   11 [-]
   12 [-]
   13 [-]
   14 [-]
-  <font color="blue">15 [39]</font>
-  <font color="blue">16 [71]</font>
+  15 [39]
+  16 [71]
   17 [-]
   18 [-]
   19 [-]
   20 [-]
   21 [-]
   22 [-]
-  <font color="blue">23 [23]</font>
+  23 [23]
 
 HASH TABLE : DOUBLE HASHING
   0 [-]
   1 [-]
   2 [-]
-  <font color="blue">3 [39]</font>
+  3 [39]
   4 [-]
   5 [-]
   6 [-]
-  <font color="blue">7 [7]</font>
+  7 [7]
   8 [-]
-  <font color="blue">9 [55]</font>
+  9 [55]
   10 [-]
   11 [-]
   12 [-]
-  <font color="blue">13 [23]</font>
+  13 [23]
   14 [-]
-  <font color="blue">15 [71]</font>
+  15 [71]
 
 HASH TABLE : CHAINING
-  <font color="blue">0 [* -> 7 -> 14 -> 21 -> 28 -> 35 -> *]</font>
+  0 [* -> 7 -> 14 -> 21 -> 28 -> 35 -> *]
   1 [EMPTY]
   2 [EMPTY]
   3 [EMPTY]
@@ -289,19 +289,19 @@ Custom Hash Function
 HASH TABLE : LINEAR PROBING
   0 [-]
   1 [-]
-  <font color="red">2 [23]</font>
+  2 [23]
   3 [-]
   4 [-]
   5 [-]
   6 [-]
-  <font color="red">7 [39]</font>
+  7 [39]
   8 [-]
-  <font color="red">9 [55]</font>
+  9 [55]
  10 [-]
  11 [-]
  12 [-]
-  <font color="red">13 [7]</font>
-  <font color="red">14 [71]</font>
+ 13 [7]
+ 14 [71]
  15 [-]
 
 Built in std::hash for int which is identity hash. (3 -> 3)
@@ -313,11 +313,11 @@ HASH TABLE : LINEAR PROBING
   4 [-]
   5 [-]
   6 [-]
-  <font color="red">7 [7]</font>
-  <font color="red">8 [23]</font>
-  <font color="red">9 [39]</font>
-  <font color="red">10 [55]</font>
-  <font color="red">11 [71]</font>
+  7 [7]
+  8 [23]
+  9 [39]
+ 10 [55]
+ 11 [71]
  12 [-]
  13 [-]
  14 [-]
