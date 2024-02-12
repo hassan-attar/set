@@ -148,6 +148,7 @@ bool hasRepeatedCharactersUsingSet(const std::string &str){ // Time: O(N) ; Spac
 ## <a id="visuals">Visuals (for Educational purposes)</a>
 The display method shows the hash table behind the set. It is great for observing how different probing methods (or possibly different hash functions) deal with collisions.
 ### Different Probing Methods and Collisions: 
+This example shows how choosing a different method of probing can reduce the possibility of forming clusters in the hash table. in all these examples, the same hash function is used.
 ```cpp
 #include <iostream>
 #include "Set.h"
@@ -175,7 +176,7 @@ int main() {
     return 0;
 }
 ```
-Output:
+#### **Output:**
 <pre>
 HASH TABLE : LINEAR PROBING
   0 [-]
@@ -185,15 +186,15 @@ HASH TABLE : LINEAR PROBING
   4 [-]
   5 [-]
   6 [-]
-  7 [7]
-  8 [23]
-  9 [39]
- 10 [55]
- 11 [71]
- 12 [-]
- 13 [-]
- 14 [-]
- 15 [-]
+  <font color="blue">7 [7]</font>
+  <font color="blue">8 [23]</font>
+  <font color="blue">9 [39]</font>
+  <font color="blue">10 [55]</font>
+  <font color="blue">11 [71]</font>
+  12 [-]
+  13 [-]
+  14 [-]
+  15 [-]
 
 HASH TABLE : QUADRATIC PROBING
   0 [-]
@@ -203,44 +204,44 @@ HASH TABLE : QUADRATIC PROBING
   4 [-]
   5 [-]
   6 [-]
-  7 [55]
-  8 [7]
+  <font color="blue">7 [55]</font>
+  <font color="blue">8 [7]</font>
   9 [-]
- 10 [-]
- 11 [-]
- 12 [-]
- 13 [-]
- 14 [-]
- 15 [39]
- 16 [71]
- 17 [-]
- 18 [-]
- 19 [-]
- 20 [-]
- 21 [-]
- 22 [-]
- 23 [23]
+  10 [-]
+  11 [-]
+  12 [-]
+  13 [-]
+  14 [-]
+  <font color="blue">15 [39]</font>
+  <font color="blue">16 [71]</font>
+  17 [-]
+  18 [-]
+  19 [-]
+  20 [-]
+  21 [-]
+  22 [-]
+  <font color="blue">23 [23]</font>
 
 HASH TABLE : DOUBLE HASHING
   0 [-]
   1 [-]
   2 [-]
-  3 [39]
+  <font color="blue">3 [39]</font>
   4 [-]
   5 [-]
   6 [-]
-  7 [7]
+  <font color="blue">7 [7]</font>
   8 [-]
-  9 [55]
- 10 [-]
- 11 [-]
- 12 [-]
- 13 [23]
- 14 [-]
- 15 [71]
+  <font color="blue">9 [55]</font>
+  10 [-]
+  11 [-]
+  12 [-]
+  <font color="blue">13 [23]</font>
+  14 [-]
+  <font color="blue">15 [71]</font>
 
 HASH TABLE : CHAINING
-  0 [* -> 7 -> 14 -> 21 -> 28 -> 35 -> *]
+  <font color="blue">0 [* -> 7 -> 14 -> 21 -> 28 -> 35 -> *]</font>
   1 [EMPTY]
   2 [EMPTY]
   3 [EMPTY]
@@ -249,6 +250,7 @@ HASH TABLE : CHAINING
   6 [EMPTY]
 </pre>
 ### Custom Hash Function and Collisions: 
+This example shows how choosing a suitable hash function for your data, can reduce the possibility of introducing clusters in the hash table.
 ```cpp
 #include <iostream>
 #include "Set.h"
@@ -281,25 +283,25 @@ int main() {
     return 0;
 }
 ```
-Output:
+#### **Output:**
 <pre>
 Custom Hash Function
 HASH TABLE : LINEAR PROBING
   0 [-]
   1 [-]
-  2 [23]
+  <font color="red">2 [23]</font>
   3 [-]
   4 [-]
   5 [-]
   6 [-]
-  7 [39]
+  <font color="red">7 [39]</font>
   8 [-]
-  9 [55]
+  <font color="red">9 [55]</font>
  10 [-]
  11 [-]
  12 [-]
- 13 [7]
- 14 [71]
+  <font color="red">13 [7]</font>
+  <font color="red">14 [71]</font>
  15 [-]
 
 Built in std::hash for int which is identity hash. (3 -> 3)
@@ -311,11 +313,11 @@ HASH TABLE : LINEAR PROBING
   4 [-]
   5 [-]
   6 [-]
-  7 [7]
-  8 [23]
-  9 [39]
- 10 [55]
- 11 [71]
+  <font color="red">7 [7]</font>
+  <font color="red">8 [23]</font>
+  <font color="red">9 [39]</font>
+  <font color="red">10 [55]</font>
+  <font color="red">11 [71]</font>
  12 [-]
  13 [-]
  14 [-]
