@@ -7,6 +7,7 @@
 #include <functional>
 #include <initializer_list>
 #include "./skiplist/SkipList.h"
+#include "UniversalHashFunction.h"
 
 enum PROBING {
     LINEAR = 1,
@@ -15,7 +16,8 @@ enum PROBING {
     CHAINING = 8
 };
 
-template<typename T, PROBING ProbingMethod = PROBING::DOUBLE_HASHING, typename hashStruct = std::hash<T>>
+template<typename T, PROBING ProbingMethod = PROBING::DOUBLE_HASHING,
+        typename PrimaryHashStruct = UniversalHash<T>, typename SecondaryHashStruct = UniversalHash<T>>
 class Set {
 private:
     typename std::conditional<ProbingMethod == PROBING::CHAINING, SkipList<T>*, T**>::type hashTable;
@@ -25,10 +27,10 @@ private:
     PROBING PROBING_METHOD;
 
     void rehash(bool increaseCap = false, size_t toCap = 0);
-    virtual size_t primaryHash(const T &value);
-    virtual size_t secondaryHash(const size_t& value);
+    size_t primaryHash(const T &value);
+    size_t secondaryHash(const T& value);
     size_t findSpot(const T &value);
-    size_t getNextIndex(int i, const size_t &hashIndex);
+    size_t getNextIndex(int i, const size_t &hashIndex, const T &value);
 public:
     Set();
     explicit Set(size_t numOfElement);
@@ -56,6 +58,7 @@ public:
     void clear();
     // getters
     inline constexpr double getLoadingFactorThreshold();
+    inline constexpr double getCurrentLoadingFactor();
     inline constexpr size_t getSize();
     inline constexpr size_t getCapacity();
 
