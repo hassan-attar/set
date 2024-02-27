@@ -23,8 +23,8 @@ private:
     size_t a;
     size_t b;
     size_t prime;
+    static size_t PRIME;
 public:
-    const static size_t PRIME;
     UniversalHash();
     UniversalHash(const DataType &maximumUniverseValue);
     UniversalHash(size_t maximumUniverseHash);
@@ -36,6 +36,9 @@ public:
     inline static std::function<size_t(DataType)> getHashFunction();
     inline static std::function<size_t(DataType)> getHashFunction(const DataType &maximumUniverseValue);
     inline static std::function<size_t(DataType)> getHashFunction(size_t maximumUniverseHash);
+    static void setMaximumUniverseValue(const DataType &maximumUniverseValue);
+    static void setMaximumUniverseHash(size_t maximumUniverseHash);
+    static void resetToDefault();
 };
 
 

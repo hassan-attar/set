@@ -8,7 +8,7 @@
 
 
 template<typename DataType, class DataToNumConverter>
-const size_t UniversalHash<DataType, DataToNumConverter>::PRIME = 999983UL;
+size_t UniversalHash<DataType, DataToNumConverter>::PRIME = 999983UL;
 // This universal hash function is capable of generating p(p-1) = 999,965,000,306 Unique hash function
 
 template<typename DataType, class DataToNumConverter>
@@ -100,4 +100,20 @@ template<typename DataType, class DataToNumConverter>
 std::function<size_t(DataType)>
 UniversalHash<DataType, DataToNumConverter>::getHashFunction(const DataType& maximumUniverseValue) {
     return genHashFunc(getClosestPrime(DataToNumConverter(maximumUniverseValue)));
+}
+
+template<typename DataType, class DataToNumConverter>
+void UniversalHash<DataType, DataToNumConverter>::setMaximumUniverseHash(size_t maximumUniverseHash) {
+    PRIME = getClosestPrime(maximumUniverseHash);
+}
+
+template<typename DataType, class DataToNumConverter>
+void UniversalHash<DataType, DataToNumConverter>::setMaximumUniverseValue(const DataType &maximumUniverseValue) {
+    PRIME = getClosestPrime(DataToNumConverter(maximumUniverseValue));
+}
+
+
+template<typename DataType, class DataToNumConverter>
+void UniversalHash<DataType, DataToNumConverter>::resetToDefault() {
+    PRIME = 999983UL;
 }
